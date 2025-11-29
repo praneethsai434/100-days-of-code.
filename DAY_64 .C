@@ -1,39 +1,32 @@
-//Write a program to take an integer array arr and an integer k as inputs. The task is to find the kth smallest element in the array. Print the kth smallest element as output.
+//Write a program to take a string s as input. The task is to find the length of the longest substring without repeating characters. Print the length as output.
 #include <stdio.h>
+#include <string.h>
 
 int main() {
-    int n, k;
-    printf("Enter number of elements: ");
-    scanf("%d", &n);
+    char s[1000];
+    printf("Enter a string: ");
+    scanf("%s", s);  // read string without spaces
 
-    int arr[n];
-    printf("Enter %d elements:\n", n);
-    for (int i = 0; i < n; i++)
-        scanf("%d", &arr[i]);
+    int n = strlen(s);
+    int maxLen = 0;
 
-    printf("Enter k: ");
-    scanf("%d", &k);
+    // Brute force approach (nested loops)
+    for (int i = 0; i < n; i++) {
+        int visited[256] = {0};  // ASCII characters
+        int currLen = 0;
 
-    if (k < 1 || k > n) {
-        printf("Invalid value of k.\n");
-        return 0;
-    }
-
-    // Sort array using simple selection sort
-    for (int i = 0; i < n - 1; i++) {
-        int min_idx = i;
-        for (int j = i + 1; j < n; j++) {
-            if (arr[j] < arr[min_idx])
-                min_idx = j;
+        for (int j = i; j < n; j++) {
+            if (visited[(int)s[j]] == 1)
+                break;  // repeating character found
+            visited[(int)s[j]] = 1;
+            currLen++;
         }
-        // Swap arr[i] and arr[min_idx]
-        int temp = arr[i];
-        arr[i] = arr[min_idx];
-        arr[min_idx] = temp;
+
+        if (currLen > maxLen)
+            maxLen = currLen;
     }
 
-    // kth smallest element is at index k-1 after sorting
-    printf("The %dth smallest element is: %d\n", k, arr[k - 1]);
+    printf("Length of longest substring without repeating characters: %d\n", maxLen);
 
     return 0;
 }
