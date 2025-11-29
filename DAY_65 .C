@@ -1,32 +1,43 @@
-//Write a program to take a string s as input. The task is to find the length of the longest substring without repeating characters. Print the length as output.
+//Write a program to take two strings s and t as inputs (assume all characters are lowercase). The task is to determine if s and t are valid anagrams, meaning they contain the same characters with the same frequencies. Print "Anagram" if they are, otherwise "Not Anagram".
 #include <stdio.h>
 #include <string.h>
 
 int main() {
-    char s[1000];
-    printf("Enter a string: ");
-    scanf("%s", s);  // read string without spaces
+    char s[1000], t[1000];
 
-    int n = strlen(s);
-    int maxLen = 0;
+    printf("Enter first string: ");
+    scanf("%s", s);
+    printf("Enter second string: ");
+    scanf("%s", t);
 
-    // Brute force approach (nested loops)
-    for (int i = 0; i < n; i++) {
-        int visited[256] = {0};  // ASCII characters
-        int currLen = 0;
+    int lenS = strlen(s);
+    int lenT = strlen(t);
 
-        for (int j = i; j < n; j++) {
-            if (visited[(int)s[j]] == 1)
-                break;  // repeating character found
-            visited[(int)s[j]] = 1;
-            currLen++;
-        }
-
-        if (currLen > maxLen)
-            maxLen = currLen;
+    // If lengths are not equal, they cannot be anagrams
+    if (lenS != lenT) {
+        printf("Not Anagram\n");
+        return 0;
     }
 
-    printf("Length of longest substring without repeating characters: %d\n", maxLen);
+    // Array to store frequency of letters 'a' to 'z'
+    int freq[26] = {0};
 
+    // Count characters in first string
+    for (int i = 0; i < lenS; i++)
+        freq[s[i] - 'a']++;
+
+    // Subtract count using second string
+    for (int i = 0; i < lenT; i++)
+        freq[t[i] - 'a']--;
+
+    // Check if all counts are zero
+    for (int i = 0; i < 26; i++) {
+        if (freq[i] != 0) {
+            printf("Not Anagram\n");
+            return 0;
+        }
+    }
+
+    printf("Anagram\n");
     return 0;
 }
